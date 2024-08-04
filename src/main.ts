@@ -1,6 +1,6 @@
 import "./style.css";
 import setupColorScheme from "./scheme.ts";
-import { getPRstatus, getPRTitle } from "./getStatus.ts";
+import { getPRstatus, getPRTitle } from "./utils.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
@@ -22,53 +22,62 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 
 setupColorScheme(document.querySelector<HTMLButtonElement>("#title")!);
 
-document
-  .querySelector<HTMLInputElement>(".input")!
-  .addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      document.querySelector<HTMLButtonElement>("#check")!.click();
-    }
-  });
+const inputElement = document.querySelector<HTMLInputElement>(".input")!;
+const checkButton = document.querySelector<HTMLButtonElement>("#check")!;
 
-document
-  .querySelector<HTMLButtonElement>("#check")!
-  .addEventListener("click", async () => {
-    const pr = document.querySelector<HTMLInputElement>(".input")!.value;
-    const title = await getPRTitle(pr);
-    if (!title) {
-      return;
-    }
+inputElement.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    redirectToPRPage();
+  }
+});
 
-    document.querySelector<HTMLAnchorElement>("#pr-link")!.href =
-      "https://github.com/nixos/nixpkgs/pull/" + pr;
+checkButton.addEventListener("click", () => {
+  redirectToPRPage();
+});
 
-    document.querySelector<HTMLAnchorElement>("#pr-link")!.innerText = title;
-
-    const datas = await getPRstatus(pr);
-    if (!datas) {
-      return;
-    }
-    for (const data of datas) {
-      const el = document.querySelector<HTMLHeadingElement>(`#${data.branch}`);
-      if (data.contain) {
-        el!.style.color = "green";
-      } else {
-        el!.style.color = "red";
-      }
-    }
-  });
+async function redirectToPRPage() {
+  const pr = inputElement.value;
+  if (pr) {
+    window.location.href = `?pr=${pr}`;
+  }
+}
 
 const urlParams = new URLSearchParams(window.location.search);
 const pr = urlParams.get("pr");
+
 if (pr) {
-  document.querySelector<HTMLInputElement>(".input")!.value = pr;
-  document.querySelector<HTMLButtonElement>("#check")!.click();
+  inputElement.value = pr;
+  handlePR(pr);
 }
 
-// disable the button and enter keypress if already clicked
-document
-  .querySelector<HTMLButtonElement>("#check")!
-  .addEventListener("click", () => {
-    document.querySelector<HTMLButtonElement>("#check")!.disabled = true;
-    document.querySelector<HTMLInputElement>(".input")!.disabled = true;
-  });
+function enableButton(set: boolean) {
+  checkButton.disabled = !set;
+  inputElement.disabled = !set;
+}
+
+async function handlePR(pr: string) {
+  enableButton(false);
+  const title = await getPRTitle(pr);
+  if (!title) {
+    return;
+  }
+
+  document.querySelector<HTMLAnchorElement>("#pr-link")!.href =
+    "https://github.com/nixos/nixpkgs/pull/" + pr;
+
+  document.querySelector<HTMLAnchorElement>("#pr-link")!.innerText = title;
+
+  const datas = await getPRstatus(pr);
+  if (!datas) {
+    return;
+  }
+  for (const data of datas) {
+    const el = document.querySelector<HTMLHeadingElement>(`#${data.branch}`);
+    if (data.contain) {
+      el!.style.color = "green";
+    } else {
+      el!.style.color = "red";
+    }
+  }
+  enableButton(true);
+}
