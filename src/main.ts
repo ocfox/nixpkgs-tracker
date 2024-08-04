@@ -57,3 +57,18 @@ document
       }
     }
   });
+
+const urlParams = new URLSearchParams(window.location.search);
+const pr = urlParams.get("pr");
+if (pr) {
+  document.querySelector<HTMLInputElement>(".input")!.value = pr;
+  document.querySelector<HTMLButtonElement>("#check")!.click();
+}
+
+// disable the button and enter keypress if already clicked
+document
+  .querySelector<HTMLButtonElement>("#check")!
+  .addEventListener("click", () => {
+    document.querySelector<HTMLButtonElement>("#check")!.disabled = true;
+    document.querySelector<HTMLInputElement>(".input")!.disabled = true;
+  });

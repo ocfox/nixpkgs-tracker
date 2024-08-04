@@ -8,7 +8,7 @@ So, it's just a static page with some JS code to get PR status from GitHub API.
 ### Features
 
 - [x] Show PR status
-- [ ] stable link (e.g. `nixpkgs-tracker.com/331928`) -- work in progress
+- [x] stable link (e.g. `nixpkgs-tracker.com/?pr=331928`)
 - [ ] github token for more requests limit
 
 <img width="911" alt="image" src="https://github.com/user-attachments/assets/2c0bf5ef-035b-4b09-8bae-857d688cfd13">
