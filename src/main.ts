@@ -79,15 +79,23 @@ async function handlePR(pr: string) {
   enableButton(false);
   const title = await getPRTitle(pr);
 
-  if (!title) {
+  if (title.status === 404) {
     titleElement.innerText = "PR not found";
+    titleElement.href = "#";
     titleElement.style.color = "red";
     enableButton(true);
     return;
   }
 
-  if (title === "Bad credentials (You may use a wrong token)") {
-    titleElement.innerText = title;
+  if (title.status === 403) {
+    titleElement.innerText = "Rate limit exceeded -- Please set token";
+    titleElement.style.color = "red";
+    enableButton(true);
+    return;
+  }
+
+  if (title.status === 401) {
+    titleElement.innerText = "Unauthorized -- Please set correct token";
     titleElement.style.color = "red";
 
     setToken("");
@@ -100,7 +108,8 @@ async function handlePR(pr: string) {
   document.querySelector<HTMLAnchorElement>("#pr-link")!.href =
     "https://github.com/nixos/nixpkgs/pull/" + pr;
 
-  document.querySelector<HTMLAnchorElement>("#pr-link")!.innerText = title;
+  document.querySelector<HTMLAnchorElement>("#pr-link")!.innerText =
+    title.title;
 
   const datas = await getPRstatus(pr);
   if (!datas) {

@@ -31,18 +31,23 @@ function header() {
 
 const headers = header();
 
-export async function getPRTitle(pr: string) {
-  return fetch(`https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`, {
-    headers,
-  })
-    .then((response) => {
-      console.log(response.status);
-      if (response.status === 401) {
-        return { title: "Bad credentials (You may use a wrong token)" };
-      }
-      return response.json();
-    })
-    .then((data) => data.title);
+type PRtitle = {
+  title: string;
+  status: number;
+};
+
+export async function getPRTitle(pr: string): Promise<PRtitle> {
+  const response = await fetch(
+    `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`,
+    { headers }
+  );
+
+  const data = await response.json();
+
+  return {
+    title: data.title,
+    status: response.status,
+  };
 }
 
 export async function getPRstatus(pr: string) {
