@@ -1,9 +1,12 @@
 ### How this works
 
-nixpkgs-tracker not same as [nixpk.gs/pr-tracker](https://nixpk.gs/pr-tracker),
+With Github API:
+get pr merged commit hash ->  compare target branch HEAD ... commit -> get status
+
+nixpkgs-tracker not same as [nixpk.gs/pr-tracker](https://nixpk.gs/pr-tracker.html),
 it does not pass any requests through server to get PR status.
 
-So, it's just a static page with some JS code to get PR status from GitHub API.
+Therefore, there is no need to worry about any performance issues.
 
 ### Features
 
@@ -12,5 +15,5 @@ So, it's just a static page with some JS code to get PR status from GitHub API.
 - [x] Github token for more requests limit (Cookie) (optional)
 - [x] Click `Nixpkgs-Tracker` to switch light / dark
 
-<img width="1032" alt="image" src="https://github.com/user-attachments/assets/addf4c5a-5061-42fa-8657-3b165af4a03b">
+<img width="1552" alt="image" src="https://github.com/user-attachments/assets/d247eb27-0320-4384-ad3f-36daca4d0ac0">
 
