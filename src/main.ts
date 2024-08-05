@@ -5,12 +5,14 @@ import { getPRstatus, getPRTitle, hasToken, setToken } from "./utils.ts";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1 id="title" >Nixpkgs-Tracker</h1>
+    <p>Check if a PR is merged to the following branches</p>
+    <p>If you just check it a couple times an hour, it will work fine without the token.</p>
     <div class="token">
       <input type="text" name="token" id="token" class="input" placeholder="Set Token for gh limit">
       <button id="save-token" type="button">Set Token</button>
     </div>
     <div class="card">
-      <input type="text" id="pr" name="text" class="input" placeholder="Pull Request"> 
+      <input type="text" id="pr" name="text" class="input" placeholder="Pull Request Number"> 
       <button id="check" type="button">Check</button>
     </div>
     <a id="pr-link" href="" target="_blank"></a>
