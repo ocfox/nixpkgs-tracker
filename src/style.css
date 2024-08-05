@@ -53,6 +53,13 @@ h1 {
   text-align: center;
 }
 
+.token {
+  /* display on right top */
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 #pr-link {
   font-size: 1.5em;
   font-weight: 500;

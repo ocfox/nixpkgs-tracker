@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 const branches = [
   "staging-next",
   "master",
@@ -6,16 +8,47 @@ const branches = [
   "nixos-unstable",
 ];
 
+export function setToken(token: string) {
+  Cookies.set("token", token, { expires: 365, sameSite: "strict" });
+}
+
+function getToken() {
+  return Cookies.get("token");
+}
+
+export function hasToken(): boolean {
+  return !!getToken();
+}
+
+function header() {
+  const token = getToken();
+  if (token) {
+    return {
+      Authorization: `token ${token}`,
+    };
+  }
+}
+
+const headers = header();
+
 export async function getPRTitle(pr: string) {
-  return fetch(`https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`)
-    .then((response) => response.json())
+  return fetch(`https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`, {
+    headers,
+  })
+    .then((response) => {
+      console.log(response.status);
+      if (response.status === 401) {
+        return { title: "Bad credentials (You may use a wrong token)" };
+      }
+      return response.json();
+    })
     .then((data) => data.title);
 }
 
 export async function getPRstatus(pr: string) {
   const url = `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`;
 
-  const response = await fetch(url);
+  const response = await fetch(url, { headers });
   if (response.status === 404) {
     return;
   }
@@ -37,7 +70,7 @@ export async function getPRstatus(pr: string) {
 
 async function isContain(branch: string, commit: string) {
   const url = `https://api.github.com/repos/nixos/nixpkgs/compare/${branch}...${commit}`;
-  const response = await fetch(url);
+  const response = await fetch(url, { headers });
   if (response.status === 404) {
     return false;
   }

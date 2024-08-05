@@ -1,12 +1,16 @@
 import "./style.css";
 import setupColorScheme from "./scheme.ts";
-import { getPRstatus, getPRTitle } from "./utils.ts";
+import { getPRstatus, getPRTitle, hasToken, setToken } from "./utils.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1 id="title" >Nixpkgs-Tracker</h1>
+    <div class="token">
+      <input type="text" name="token" id="token" class="input" placeholder="Set Token for gh limit">
+      <button id="save-token" type="button">Set Token</button>
+    </div>
     <div class="card">
-      <input type="text" name="text" class="input" placeholder="Pull Request"> 
+      <input type="text" id="pr" name="text" class="input" placeholder="Pull Request"> 
       <button id="check" type="button">Check</button>
     </div>
     <a id="pr-link" href="" target="_blank"></a>
@@ -22,8 +26,24 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 
 setupColorScheme(document.querySelector<HTMLButtonElement>("#title")!);
 
-const inputElement = document.querySelector<HTMLInputElement>(".input")!;
+const titleElement = document.querySelector<HTMLAnchorElement>("#pr-link")!;
+const inputElement = document.querySelector<HTMLInputElement>("#pr")!;
+const tokenElement = document.querySelector<HTMLInputElement>("#token")!;
 const checkButton = document.querySelector<HTMLButtonElement>("#check")!;
+const saveTokenButton =
+  document.querySelector<HTMLButtonElement>("#save-token")!;
+
+tokenElement.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    setToken(tokenElement.value);
+  }
+});
+
+saveTokenButton.addEventListener("click", () => {
+  setToken(tokenElement.value);
+  tokenElement.value = "Token is set";
+  saveTokenButton.textContent = "Change Token";
+});
 
 inputElement.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
@@ -58,7 +78,22 @@ function enableButton(set: boolean) {
 async function handlePR(pr: string) {
   enableButton(false);
   const title = await getPRTitle(pr);
+
   if (!title) {
+    titleElement.innerText = "PR not found";
+    titleElement.style.color = "red";
+    enableButton(true);
+    return;
+  }
+
+  if (title === "Bad credentials (You may use a wrong token)") {
+    titleElement.innerText = title;
+    titleElement.style.color = "red";
+
+    setToken("");
+    saveTokenButton.textContent = "Set Token";
+    tokenElement.focus();
+
     return;
   }
 
@@ -72,12 +107,20 @@ async function handlePR(pr: string) {
     return;
   }
   for (const data of datas) {
-    const el = document.querySelector<HTMLHeadingElement>(`#${data.branch}`);
+    const branch = document.querySelector<HTMLHeadingElement>(
+      `#${data.branch}`
+    );
     if (data.contain) {
-      el!.style.color = "green";
+      branch!.style.color = "green";
     } else {
-      el!.style.color = "red";
+      branch!.style.color = "red";
     }
   }
   enableButton(true);
+}
+
+if (hasToken()) {
+  tokenElement.value = "Token is set";
+  document.querySelector<HTMLButtonElement>("#save-token")!.textContent =
+    "Change Token";
 }
