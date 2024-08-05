@@ -16,7 +16,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <button id="check" type="button">Check</button>
     </div>
     <a id="pr-link" href="" target="_blank"></a>
-    <div class="card">
+    <div id="branch" class="card">
       <h2 id="staging-next">staging-next</h2>
       <h2 id="master">master</h2>
       <h2 id="nixos-unstable-small">nixos-unstable-small</h2>
@@ -120,11 +120,14 @@ async function handlePR(pr: string) {
   for (const data of datas) {
     const branch = document.querySelector<HTMLHeadingElement>(
       `#${data.branch}`
-    );
+    )!;
     if (data.contain) {
-      branch!.style.color = "green";
+      branch.textContent = `${data.branch} ✅`;
+      branch.style.color = "green";
     } else {
-      branch!.style.color = "red";
+      branch.textContent = `${data.branch} ❌`;
+      branch.classList.add("unmerged");
+      branch.style.color = "gray";
     }
   }
   enableButton(true);
