@@ -54,7 +54,7 @@ h1 {
 }
 
 .token {
-  /* display on right top */
+  padding: 0.5em;
   position: absolute;
   top: 0;
   right: 0;
