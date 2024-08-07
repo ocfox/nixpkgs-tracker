@@ -1,10 +1,10 @@
 import Cookies from "js-cookie";
 
-const branches = [
+export const branches = [
   "staging-next",
   "master",
-  "nixpkgs-unstable",
   "nixos-unstable-small",
+  "nixpkgs-unstable",
   "nixos-unstable",
 ];
 
@@ -50,30 +50,21 @@ export async function getPRTitle(pr: string): Promise<PRtitle> {
   };
 }
 
-export async function getPRstatus(pr: string) {
-  const url = `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`;
+export async function getMeregeCommit(pr: string): Promise<string> {
+  const response = await fetch(
+    `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`,
+    { headers }
+  );
 
-  const response = await fetch(url, { headers });
-  if (response.status === 404) {
-    return;
-  }
   const data = await response.json();
-  if (!data.merged) {
-    return;
-  }
 
-  const inBranches = branches.map(async (branch) => {
-    return {
-      branch,
-      contain: await isContain(branch, data.merge_commit_sha),
-    };
-  });
-
-  const statuses = await Promise.all(inBranches);
-  return statuses;
+  return data.merge_commit_sha;
 }
 
-async function isContain(branch: string, commit: string) {
+export async function isContain(
+  branch: string,
+  commit: string
+): Promise<boolean> {
   const url = `https://api.github.com/repos/nixos/nixpkgs/compare/${branch}...${commit}`;
   const response = await fetch(url, { headers });
   if (response.status === 404) {

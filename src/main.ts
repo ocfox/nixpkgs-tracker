@@ -1,6 +1,13 @@
 import "./style.css";
 import setupColorScheme from "./scheme.ts";
-import { getPRstatus, getPRTitle, hasToken, setToken } from "./utils.ts";
+import {
+  branches,
+  isContain,
+  getPRTitle,
+  hasToken,
+  setToken,
+  getMeregeCommit,
+} from "./utils.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
@@ -113,23 +120,27 @@ async function handlePR(pr: string) {
   document.querySelector<HTMLAnchorElement>("#pr-link")!.innerText =
     title.title;
 
-  const datas = await getPRstatus(pr);
-  if (!datas) {
-    return;
-  }
-  for (const data of datas) {
-    const branch = document.querySelector<HTMLHeadingElement>(
-      `#${data.branch}`
+  const mergeCommit = await getMeregeCommit(pr);
+
+  async function checkBranch(branch: string) {
+    const merged = await isContain(branch, mergeCommit);
+    const branchElement = document.querySelector<HTMLHeadingElement>(
+      `#${branch}`
     )!;
-    if (data.contain) {
-      branch.textContent = `${data.branch} ✅`;
-      branch.style.color = "green";
+    if (merged) {
+      branchElement.textContent = `${branch} ✅`;
+      branchElement.style.color = "green";
     } else {
-      branch.textContent = `${data.branch} ❌`;
-      branch.classList.add("unmerged");
-      branch.style.color = "gray";
+      branchElement.textContent = `${branch} ❌`;
+      branchElement.classList.add("unmerged");
+      branchElement.style.color = "gray";
     }
   }
+
+  for (const branch of branches) {
+    checkBranch(branch);
+  }
+
   enableButton(true);
 }
 
