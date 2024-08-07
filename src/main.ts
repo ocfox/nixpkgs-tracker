@@ -12,7 +12,7 @@ import {
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1 id="title" >Nixpkgs-Tracker</h1>
-    <p>Check if a PR is merged to the following branches</p>
+    <p>Check if a PR is merged to the following branches. <a href="https://github.com/ocfox/nixpkgs-tracker" target="_blank">Source</a></p>
     <p>If you just check it a couple times an hour, it will work fine without the token.</p>
     <div class="token">
       <input type="text" name="token" id="token" class="input" placeholder="Set Token for gh limit">
