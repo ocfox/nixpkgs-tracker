@@ -3,7 +3,7 @@ import setupColorScheme from "./scheme.ts";
 import {
   branches,
   isContain,
-  getPRTitle,
+  getPR,
   hasToken,
   setToken,
   getMeregeCommit,
@@ -84,9 +84,22 @@ function enableButton(set: boolean) {
   inputElement.disabled = !set;
 }
 
+function setPRtitle(title: string) {
+  titleElement.innerText = title;
+}
+
 async function handlePR(pr: string) {
   enableButton(false);
-  const title = await getPRTitle(pr);
+
+  const prNumber = parseInt(pr, 10);
+  if (prNumber < 20000) {
+    setPRtitle("Pull Request before 20000 are not supported");
+    titleElement.style.color = "red";
+    enableButton(true);
+    return;
+  }
+
+  const title = await getPR(pr);
 
   if (title.status === 404) {
     titleElement.innerText = "PR not found";
@@ -114,11 +127,8 @@ async function handlePR(pr: string) {
     return;
   }
 
-  document.querySelector<HTMLAnchorElement>("#pr-link")!.href =
-    "https://github.com/nixos/nixpkgs/pull/" + pr;
-
-  document.querySelector<HTMLAnchorElement>("#pr-link")!.innerText =
-    title.title;
+  titleElement.href = "https://github.com/nixos/nixpkgs/pull/" + pr;
+  setPRtitle(title.title);
 
   const mergeCommit = await getMeregeCommit(pr);
 

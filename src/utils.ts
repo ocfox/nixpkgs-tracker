@@ -31,12 +31,12 @@ function header() {
 
 const headers = header();
 
-type PRtitle = {
+type PR = {
   title: string;
   status: number;
 };
 
-export async function getPRTitle(pr: string): Promise<PRtitle> {
+export async function getPR(pr: string): Promise<PR> {
   const response = await fetch(
     `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`,
     { headers }
