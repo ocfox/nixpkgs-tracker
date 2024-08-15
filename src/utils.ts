@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export const branches = [
   "staging-next",
   "master",
@@ -9,11 +7,11 @@ export const branches = [
 ];
 
 export function setToken(token: string) {
-  Cookies.set("token", token, { expires: 365, sameSite: "strict" });
+  localStorage.setItem("token", token);
 }
 
 function getToken() {
-  return Cookies.get("token");
+  return localStorage.getItem("token");
 }
 
 export function hasToken(): boolean {
