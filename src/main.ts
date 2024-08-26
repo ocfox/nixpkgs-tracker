@@ -2,11 +2,11 @@ import "./style.css";
 import setupColorScheme from "./scheme.ts";
 import {
   branches,
-  isContain,
+  getMeregeCommit,
   getPR,
   hasToken,
+  isContain,
   setToken,
-  getMeregeCommit,
 } from "./utils.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -135,7 +135,7 @@ async function handlePR(pr: string) {
   async function checkBranch(branch: string) {
     const merged = await isContain(branch, mergeCommit);
     const branchElement = document.querySelector<HTMLHeadingElement>(
-      `#${branch}`
+      `#${branch}`,
     )!;
     if (merged) {
       branchElement.textContent = `${branch} ✅`;

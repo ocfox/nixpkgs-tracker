@@ -37,7 +37,7 @@ type PR = {
 export async function getPR(pr: string): Promise<PR> {
   const response = await fetch(
     `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`,
-    { headers }
+    { headers },
   );
 
   const data = await response.json();
@@ -51,7 +51,7 @@ export async function getPR(pr: string): Promise<PR> {
 export async function getMeregeCommit(pr: string): Promise<string> {
   const response = await fetch(
     `https://api.github.com/repos/nixos/nixpkgs/pulls/${pr}`,
-    { headers }
+    { headers },
   );
 
   const data = await response.json();
@@ -61,7 +61,7 @@ export async function getMeregeCommit(pr: string): Promise<string> {
 
 export async function isContain(
   branch: string,
-  commit: string
+  commit: string,
 ): Promise<boolean> {
   const url = `https://api.github.com/repos/nixos/nixpkgs/compare/${branch}...${commit}`;
   const response = await fetch(url, { headers });
