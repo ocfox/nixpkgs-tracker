@@ -2,16 +2,22 @@ import "./style.css";
 import setupColorScheme from "./scheme.ts";
 import {
   branches,
+  deleteHistory,
   getMeregeCommit,
   getPR,
   hasToken,
   isContain,
+  saveHistory,
   setToken,
 } from "./utils.ts";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1 id="title" >Nixpkgs-Tracker</h1>
+    <div class="history" class="card">
+      <h3>History</h3>
+      <ul class="history-link"></ul>
+    </div>
     <p>Check if a PR is merged to the following branches. <a href="https://github.com/ocfox/nixpkgs-tracker" target="_blank">Source</a></p>
     <p>If you just check it a couple times an hour, it will work fine without the token.</p>
     <div class="token">
@@ -62,6 +68,16 @@ inputElement.addEventListener("keypress", (e) => {
 
 checkButton.addEventListener("click", () => {
   redirectToPRPage();
+});
+
+const historyElement =
+  document.querySelector<HTMLUListElement>(".history-link")!;
+const history = JSON.parse(localStorage.getItem("history") || "[]");
+console.log(history);
+history.forEach((h: { pr: number; title: string }) => {
+  const li = document.createElement("li");
+  li.innerHTML = `<a href="?pr=${h.pr}">${h.title}</a>`;
+  historyElement.appendChild(li);
 });
 
 async function redirectToPRPage() {
@@ -131,6 +147,8 @@ async function handlePR(pr: string) {
   setPRtitle(title.title);
 
   const mergeCommit = await getMeregeCommit(pr);
+  const isPrSaved = history.some((h: { pr: number }) => h.pr === prNumber);
+  let status = 1;
 
   async function checkBranch(branch: string) {
     const merged = await isContain(branch, mergeCommit);
@@ -144,11 +162,17 @@ async function handlePR(pr: string) {
       branchElement.textContent = `${branch} ❌`;
       branchElement.classList.add("unmerged");
       branchElement.style.color = "gray";
+      status = 0;
     }
   }
 
-  for (const branch of branches) {
-    checkBranch(branch);
+  await Promise.all(branches.map(checkBranch));
+
+  if (status === 1 && isPrSaved) {
+    deleteHistory(prNumber);
+  }
+  if (status === 0 && !isPrSaved) {
+    saveHistory({ pr: prNumber, title: title.title, mergeCommit });
   }
 
   enableButton(true);

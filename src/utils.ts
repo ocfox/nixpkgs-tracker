@@ -74,3 +74,38 @@ export async function isContain(
   }
   return false;
 }
+
+export type History = {
+  pr: number;
+  title: string;
+  mergeCommit: string;
+};
+
+export function getHistoryList(): History[] {
+  const history = localStorage.getItem("history");
+  if (history) {
+    return JSON.parse(history);
+  }
+  return [];
+}
+
+export function saveHistory(history: History) {
+  const historyList = getHistoryList();
+  historyList.push(history);
+  localStorage.setItem("history", JSON.stringify(historyList));
+}
+
+export function getHistoryTitle(pr: number): string {
+  const history = getHistoryList();
+  const item = history.find((item) => item.pr === pr);
+  if (item) {
+    return item.title;
+  }
+  return "";
+}
+
+export function deleteHistory(pr: number) {
+  const history = getHistoryList();
+  const newHistory = history.filter((item) => item.pr !== pr);
+  localStorage.setItem("history", JSON.stringify(newHistory));
+}
