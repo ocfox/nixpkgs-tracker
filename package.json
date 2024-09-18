@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
     "typescript": "^5.2.2",
-    "vite": "^5.3.4"
+    "vite": "^5.4.6"
   },
   "packageManager": "yarn@1.22.22"
 }
