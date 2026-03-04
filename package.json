@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
-    "typescript": "^5.8.3",
-    "vite": "^5.4.21"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
-  "packageManager": "pnpm@9.9.0"
+  "packageManager": "pnpm@10.28.0"
 }
