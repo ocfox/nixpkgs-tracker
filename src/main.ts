@@ -1,5 +1,6 @@
 import "./style.css";
 import setupColorScheme from "./scheme.ts";
+import setFavicon from "./favicon.ts";
 import {
   branches,
   getMergeCommit,
@@ -20,7 +21,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <button id="save-token" type="button">Set Token</button>
     </div>
     <div class="card">
-      <input type="text" id="pr" name="text" class="input" placeholder="Pull Request Number"> 
+      <input type="text" id="pr" name="text" class="input" placeholder="Pull Request Number">
       <button id="check" type="button">Check</button>
     </div>
     <a id="pr-link" href="" target="_blank"></a>
@@ -99,6 +100,7 @@ async function handlePR(pr: string) {
   if (prNumber < 20000) {
     setPRtitle("Pull Request before 20000 are not supported");
     titleElement.style.color = "red";
+    setFavicon("red");
     enableButton(true);
     return;
   }
@@ -108,6 +110,7 @@ async function handlePR(pr: string) {
   if (prHeader.closed) {
     titleElement.innerText = "PR is closed";
     titleElement.style.color = "red";
+    setFavicon("red");
     enableButton(true);
     return;
   }
@@ -116,6 +119,7 @@ async function handlePR(pr: string) {
     titleElement.innerText = "PR not found";
     titleElement.href = "#";
     titleElement.style.color = "red";
+    setFavicon("red");
     enableButton(true);
     return;
   }
@@ -123,6 +127,7 @@ async function handlePR(pr: string) {
   if (prHeader.status === 403) {
     titleElement.innerText = "Rate limit exceeded -- Please set token";
     titleElement.style.color = "red";
+    setFavicon("red");
     enableButton(true);
     return;
   }
@@ -130,6 +135,7 @@ async function handlePR(pr: string) {
   if (prHeader.status === 401) {
     titleElement.innerText = "Unauthorized -- Please set correct token";
     titleElement.style.color = "red";
+    setFavicon("red");
 
     setToken("");
     saveTokenButton.textContent = "Set Token";
@@ -143,12 +149,17 @@ async function handlePR(pr: string) {
 
   const mergeCommit = await getMergeCommit(pr);
 
+  let mergedCount = 0;
+  let totalCount = 0;
+
   async function checkBranch(branch: string) {
     const merged = await isContain(branch, mergeCommit);
     const branchElement = document.querySelector<HTMLHeadingElement>(
       `#${branch}`,
     )!;
+    totalCount++;
     if (merged) {
+      mergedCount++;
       branchElement.textContent = `${branch} ✅`;
       branchElement.style.color = "green";
     } else {
@@ -164,7 +175,9 @@ async function handlePR(pr: string) {
     const branchElement = document.querySelector<HTMLHeadingElement>(
       `#base-branch`,
     )!;
+    totalCount++;
     if (merged) {
+      mergedCount++;
       branchElement.textContent = `${baseBranch} ✅`;
       branchElement.style.color = "green";
     } else {
@@ -190,6 +203,15 @@ async function handlePR(pr: string) {
     await Promise.all(branches.map(checkBranch));
   }
 
+  // All merged
+  if (mergedCount === totalCount) {
+    setFavicon("green");
+  } else if (mergedCount > 0) { // Partially merged
+    setFavicon("orange");
+  } else { // None merged
+    setFavicon("red");
+  }
+  
   enableButton(true);
 }
 
