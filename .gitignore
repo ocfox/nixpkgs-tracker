@@ -2,3 +2,4 @@ node_modules
 dist
 .pre-commit-config.yaml
 .direnv
+result
