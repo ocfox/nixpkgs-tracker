@@ -15,7 +15,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1 id="title" >Nixpkgs-Tracker</h1>
     <p>Check if a PR is merged to the following branches. <a href="https://github.com/ocfox/nixpkgs-tracker" target="_blank">Source</a></p>
-    <p>If you just check it a couple times an hour, it will work fine without the token.</p>
+    <p>Try <a href="https://ocfox.me/nixpkgs-tracker">ocfox.me/nixpkgs-tracker</a> now, this site is deprecated</p>
     <div class="token">
       <input type="text" name="token" id="token" class="input" placeholder="Set Token for gh limit">
       <button id="save-token" type="button">Set Token</button>
