@@ -16,10 +16,10 @@
   --border: #d1d5db;
   --card-bg: #f9fafb;
   --input-bg: #fff;
-  --green: #16a34a;
+  --green: #059669;
   --red: #dc2626;
-  --blue: #2563eb;
-  --blue-hover: #1d4ed8;
+  --blue: #0969da;
+  --blue-hover: #0550ae;
 }
 
 /* --- main row --- */
@@ -89,7 +89,6 @@
   color: var(--text);
   background: var(--input-bg);
   border: 1px solid var(--border);
-  border-radius: 6px;
   outline: none;
   box-sizing: border-box;
   transition: border-color 0.15s;
@@ -117,7 +116,6 @@
   color: var(--text);
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
@@ -149,7 +147,6 @@
   color: var(--red);
   background: color-mix(in srgb, var(--red) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--red) 25%, transparent);
-  border-radius: 6px;
 }
 
 /* --- result card --- */
@@ -157,7 +154,6 @@
   padding: 20px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 8px;
 }
 
 .pr-title {
@@ -192,7 +188,6 @@
   align-items: center;
   gap: 8px;
   padding: 4px 10px;
-  border-radius: 4px;
   font-size: 15px;
 }
 
@@ -217,6 +212,20 @@
 
 .status-item.merged {
   color: var(--green);
+}
+
+.status-item.merged .status-icon {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid var(--green);
+  position: relative;
+}
+
+.status-item.merged .status-icon:checked::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: var(--green);
 }
 
 .status-item.unmerged {
