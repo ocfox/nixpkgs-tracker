@@ -20,4 +20,4 @@ You could get static files with:
 - [x] Github token for more requests limit (optional)
 - [x] Check multiple branches at the same time
 
-<img width="3696" height="1917" alt="nixpkgs-tracker ocfox me__pr=512987" src="https://github.com/user-attachments/assets/322eea55-0a77-4354-8962-c30244b6ac3f" />
+<img width="3696" height="1917" alt="nixpkgs-tracker" src="https://github.com/user-attachments/assets/fb0d18d6-5482-4ec4-8f85-0a00831e43f5" />
