@@ -16,7 +16,8 @@ You could get static files with:
 ### Features
 
 - [x] Show PR status
-- [x] Stable link (e.g. https://nixpkgs-tracker.ocfox.me/?pr=331928)
-- [x] Github token for more requests limit (Cookie) (optional)
+- [x] Stable link (e.g. https://nixpkgs-tracker.ocfox.me/?pr=512987)
+- [x] Github token for more requests limit (optional)
 - [x] Check multiple branches at the same time
 
+<img width="3696" height="1917" alt="nixpkgs-tracker ocfox me__pr=512987" src="https://github.com/user-attachments/assets/322eea55-0a77-4354-8962-c30244b6ac3f" />
