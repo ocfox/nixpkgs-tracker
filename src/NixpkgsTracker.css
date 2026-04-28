@@ -22,17 +22,6 @@
   --blue-hover: #1d4ed8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f0f14;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --border: #374151;
-    --card-bg: #1a1a24;
-    --input-bg: #1e1e2a;
-  }
-}
-
 /* --- main row --- */
 .main-row {
   display: flex;
@@ -243,8 +232,15 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.15; }
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.15;
+  }
 }
 
 /* --- summary --- */
