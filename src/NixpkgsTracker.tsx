@@ -8,7 +8,7 @@ const ALL_BRANCHES = [
   "nixos-unstable-small",
   "nixpkgs-unstable",
   "nixos-unstable",
-  "nixos-25.11",
+  "nixos-26.05",
 ];
 
 const LS_TOKEN = "nixpkgs_tracker_token";
@@ -157,7 +157,7 @@ export function NixpkgsTracker() {
     if (isRelease()) {
       return [prBase()];
     }
-    return Array.from(selectedBranches());
+    return ALL_BRANCHES.filter((b) => selectedBranches().has(b));
   });
 
   function handleToggleBranch(branch: string) {
