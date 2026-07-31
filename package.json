@@ -1,13 +1,14 @@
 {
   "name": "nixpkgs-tracker",
   "version": "1.0.0",
-  "description": "",
+  "description": "Client-side tracker for nixpkgs PR branch merge status",
   "type": "module",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "license": "MIT",
   "devDependencies": {

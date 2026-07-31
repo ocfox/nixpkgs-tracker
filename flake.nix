@@ -1,4 +1,10 @@
 {
+  description = "Client-side tracker for nixpkgs PR branch merge status";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
+
   outputs =
     inputs@{
       self,
@@ -15,8 +21,6 @@
 
       perSystem =
         {
-          lib,
-          system,
           pkgs,
           ...
         }:
@@ -46,7 +50,7 @@
               pnpmDeps = pkgs.fetchPnpmDeps {
                 inherit pname version src;
                 fetcherVersion = 3;
-                hash = "sha256-goL7wubTYcekbQ1d4Cgl7zduTDgV7NMKk0gPnMljTdo=";
+                hash = "sha256-iv1gQ9+g2YmpqvBC2s/jQOAPjL2P0QSg9cmkqF3oJOU=";
               };
 
               nativeBuildInputs = with pkgs; [
@@ -55,13 +59,17 @@
                 pnpm
               ];
 
-              buildPhase = "pnpm build";
+              buildPhase = ''
+                runHook preBuild
+                pnpm build
+                runHook postBuild
+              '';
 
               installPhase = ''
                 runHook preInstall
 
-                mkdir $out
-                mv dist $out
+                mkdir -p $out
+                cp -r dist $out/
 
                 runHook postInstall
               '';
@@ -71,9 +79,4 @@
           };
         };
     };
-
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  };
-
 }
