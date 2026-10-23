@@ -17,16 +17,16 @@ importers:
     devDependencies:
       solid-devtools:
         specifier: ^0.34.3
-        version: 0.34.3(solid-js@1.9.9)(vite@7.3.5)
+        version: 0.34.3(solid-js@1.9.9)(vite@7.3.7)
       typescript:
         specifier: ^5.7.2
         version: 5.9.2
       vite:
-        specifier: ^7.3.5
-        version: 7.3.5
+        specifier: ^7.3.7
+        version: 7.3.7
       vite-plugin-solid:
         specifier: ^2.11.8
-        version: 2.11.9(solid-js@1.9.9)(vite@7.3.5)
+        version: 2.11.9(solid-js@1.9.9)(vite@7.3.7)
 
 packages:
 
@@ -704,8 +704,8 @@ packages:
       '@testing-library/jest-dom':
         optional: true
 
-  vite@7.3.5:
-    resolution: {integrity: sha512-KuOaNhcnGFN2zIPGA7wRmzF+lJA1sea7rHq17aiJ++9lzY1WWG6Jpwqwe1KNbRVPIqHmr8GLYx7jbrQcN/7/ww==}
+  vite@7.3.7:
+    resolution: {integrity: sha512-AHEzTORMbi7/7aXp7w7KZ5+DCUdSeLsJz0grY8xHpc9DHdYb0vQu6DqJfm2tOw3gDExNgPgnJTXxM6syYFHaCA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -1318,7 +1318,7 @@ snapshots:
 
   seroval@1.3.2: {}
 
-  solid-devtools@0.34.3(solid-js@1.9.9)(vite@7.3.5):
+  solid-devtools@0.34.3(solid-js@1.9.9)(vite@7.3.7):
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.4)
@@ -1327,7 +1327,7 @@ snapshots:
       '@solid-devtools/shared': 0.20.0(solid-js@1.9.9)
       solid-js: 1.9.9
     optionalDependencies:
-      vite: 7.3.5
+      vite: 7.3.7
     transitivePeerDependencies:
       - supports-color
 
@@ -1363,7 +1363,7 @@ snapshots:
 
   validate-html-nesting@1.2.3: {}
 
-  vite-plugin-solid@2.11.9(solid-js@1.9.9)(vite@7.3.5):
+  vite-plugin-solid@2.11.9(solid-js@1.9.9)(vite@7.3.7):
     dependencies:
       '@babel/core': 7.28.4
       '@types/babel__core': 7.20.5
@@ -1371,12 +1371,12 @@ snapshots:
       merge-anything: 5.1.7
       solid-js: 1.9.9
       solid-refresh: 0.6.3(solid-js@1.9.9)
-      vite: 7.3.5
-      vitefu: 1.1.1(vite@7.3.5)
+      vite: 7.3.7
+      vitefu: 1.1.1(vite@7.3.7)
     transitivePeerDependencies:
       - supports-color
 
-  vite@7.3.5:
+  vite@7.3.7:
     dependencies:
       esbuild: 0.27.7
       fdir: 6.5.0(picomatch@4.0.4)
@@ -1387,8 +1387,8 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  vitefu@1.1.1(vite@7.3.5):
+  vitefu@1.1.1(vite@7.3.7):
     optionalDependencies:
-      vite: 7.3.5
+      vite: 7.3.7
 
   yallist@3.1.1: {}
